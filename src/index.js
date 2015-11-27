@@ -6,6 +6,7 @@ import Code from "./components/code";
 import Deck from "./components/deck";
 import Fill from "./components/fill";
 import Fit from "./components/fit";
+import FullWidth from "./components/full-width";
 import Heading from "./components/heading";
 import Image from "./components/image";
 import Layout from "./components/layout";
@@ -28,6 +29,7 @@ export {
   Deck,
   Fill,
   Fit,
+  FullWidth,
   Heading,
   Image,
   Layout,
