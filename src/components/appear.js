@@ -1,13 +1,13 @@
 import React, { PropTypes } from "react";
 import tweenState from "react-tween-state";
-import _ from "lodash";
 import { connect } from "react-redux";
 
 const Appear = React.createClass({
   mixins: [tweenState.Mixin],
   propTypes: {
-    children: PropTypes.node,
-    style: PropTypes.object
+    order: PropTypes.number,
+    style: PropTypes.object,
+    children: PropTypes.node
   },
   contextTypes: {
     export: PropTypes.bool,
@@ -16,22 +16,19 @@ const Appear = React.createClass({
   },
   getInitialState() {
     return {
-      active: false,
+      visible: false,
       opacity: this.context.export || this.context.overview ? 1 : 0
     };
   },
-  componentWillReceiveProps(nextProps) {
-    const state = nextProps.fragment;
+  componentWillReceiveProps({fragment: {fragments}}) {
     const slide = this.context.slide;
     const fragment = this.refs.fragment;
-    const key = _.findKey(state.fragments[slide], {
-      "id": parseInt(fragment.dataset.fid)
-    });
-    if (slide in state.fragments && state.fragments[slide].hasOwnProperty(key)) {
+    const id = parseInt(fragment.dataset.fid);
+    if (slide in fragments && fragments[slide].hasOwnProperty(id)) {
       this.setState({
-        active: state.fragments[slide][key].visible
+        visible: fragments[slide][id].visible
       }, () => {
-        let endVal = this.state.active ? 1 : 0;
+        let endVal = this.state.visible ? 1 : 0;
         if (this.context.export || this.context.overview) {
           endVal = 1;
         }
@@ -44,12 +41,13 @@ const Appear = React.createClass({
     }
   },
   render() {
-    const styles = {
+    const { order, style, children } = this.props;
+    const styleOpacity = {
       opacity: this.getTweeningValue("opacity")
     };
     return (
-      <div style={Object.assign({}, this.props.style, styles)} className="fragment" ref="fragment">
-        {this.props.children}
+      <div data-order={order} style={Object.assign({}, style, styleOpacity)} className="fragment" ref="fragment">
+        {children}
       </div>
     );
   }

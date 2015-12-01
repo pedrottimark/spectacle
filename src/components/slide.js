@@ -52,18 +52,23 @@ const Slide = React.createClass({
     });
   },
   componentDidMount() {
+    const { dispatch, hash, lastSlide, slideIndex } = this.props;
     this.setZoom();
     const slide = this.refs.slide;
     const frags = slide.querySelectorAll(".fragment");
     if (frags && frags.length && !this.context.overview) {
-      Array.prototype.slice.call(frags, 0).forEach((frag, i) => {
-        frag.dataset.fid = i;
-        return this.props.dispatch && this.props.dispatch(addFragment({
-          slide: this.props.hash,
-          id: i,
-          visible: this.props.lastSlide > this.props.slideIndex
-        }));
-      });
+      const fragmentsArray = Array.prototype.slice.call(frags, 0);
+      // sort primary by order prop of fragment, secondary by index of fragment in document order
+      fragmentsArray.map((fragment, index) => ([Number(fragment.dataset.order) || 0, index]))
+        .sort(([orderA, indexA], [orderB, indexB]) => orderA === orderB ? indexA - indexB : orderA - orderB)
+        .forEach(([order, index], id) => {
+          fragmentsArray[index].dataset.fid = id;
+          return dispatch && dispatch(addFragment({
+            slide: hash,
+            id,
+            visible: lastSlide > slideIndex
+          }));
+        });
     }
     window.addEventListener("load", this.setZoom);
     window.addEventListener("resize", this.setZoom);

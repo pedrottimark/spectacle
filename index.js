@@ -54,17 +54,17 @@ render(
         />
       </Slide>
       <Slide transition={["slide"]} bgImage={images.city.replace("/", "")} bgDarken={0.75}>
-        <Appear fid="1">
+        <Appear>
           <Heading size={1} caps fit textColor="primary">
             Full Width
           </Heading>
         </Appear>
-        <Appear fid="2">
+        <Appear>
           <Heading size={1} caps fit textColor="tertiary">
             Adjustable Darkness
           </Heading>
         </Appear>
-        <Appear fid="3">
+        <Appear>
           <Heading size={1} caps fit textColor="primary">
             Background Imagery
           </Heading>
@@ -116,12 +116,25 @@ You can write inline images, [Markdown Links](http://commonmark.org), paragraph 
       </Slide>
       <Slide transition={["fade"]} bgColor="secondary" textColor="primary">
         <List>
-          <ListItem><Appear fid="1">Inline style based theme system</Appear></ListItem>
-          <ListItem><Appear fid="2">Autofit text</Appear></ListItem>
-          <ListItem><Appear fid="3">Flexbox layout system</Appear></ListItem>
-          <ListItem><Appear fid="4">React-Router navigation</Appear></ListItem>
-          <ListItem><Appear fid="5">PDF export</Appear></ListItem>
-          <ListItem><Appear fid="6">And...</Appear></ListItem>
+          <ListItem><Appear>Inline style based theme system</Appear></ListItem>
+          <ListItem><Appear>Autofit text</Appear></ListItem>
+          <ListItem><Appear>Flexbox layout system</Appear></ListItem>
+          <ListItem><Appear>React-Router navigation</Appear></ListItem>
+          <ListItem><Appear>PDF export</Appear></ListItem>
+          <ListItem><Appear>And...</Appear></ListItem>
+        </List>
+      </Slide>
+      <Slide transition={["fade"]} bgColor={"secondary"} textColor="primary">
+        <List>
+          <Appear order={123}><ListItem>Ninth 123</ListItem></Appear>
+          <Appear order={1}><ListItem>Fifth 1</ListItem></Appear>
+          <Appear order={0}><ListItem>Third specified 0</ListItem></Appear>
+          <Appear order={2}><ListItem>Seventh 2</ListItem></Appear>
+          <Appear order={1}><ListItem>Sixth 1</ListItem></Appear>
+          <Appear><ListItem>Fourth unspecified 0</ListItem></Appear>
+          <Appear order={-2}><ListItem>Second -2</ListItem></Appear>
+          <Appear order={-13}><ListItem>First -13</ListItem></Appear>
+          <Appear order={17}><ListItem>Eigth 17</ListItem></Appear>
         </List>
       </Slide>
       <Slide transition={["slide"]} bgColor="primary">
