@@ -4,11 +4,11 @@ import Radium from "radium";
 @Radium
 export default class Fill extends Component {
   render() {
-    const styles = {
+    const styleFill = {
       flex: 1
     };
     return (
-      <div className={this.props.className} style={[styles, this.props.style]}>
+      <div className={this.props.className} style={[this.props.style, styleFill]}>
         {this.props.children}
       </div>
     );

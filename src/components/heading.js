@@ -1,6 +1,6 @@
 import React, { Component, createElement, PropTypes } from "react";
-import { getStyles } from "../utils/base";
 import Radium from "radium";
+import { styleBase, propTypesBase } from "../utils/base";
 
 @Radium
 export default class Heading extends Component {
@@ -67,7 +67,7 @@ export default class Heading extends Component {
           ref="container"
           style={[
             this.context.styles.components.heading[`h${size}`],
-            getStyles.call(this), styles.container
+            styleBase(this.props, this.context), styles.container
           ]}
         >
           <span ref="text" style={[styles.text, style]}>
@@ -77,7 +77,7 @@ export default class Heading extends Component {
       ) : (
         createElement(Tag, {
           className: this.props.className,
-          style: [this.context.styles.components.heading[`h${size}`], getStyles.call(this), styles.nonFit, style]
+          style: [this.context.styles.components.heading[`h${size}`], styleBase(this.props, this.context), styles.nonFit, style]
         }, children)
       )
     );
@@ -89,14 +89,14 @@ Heading.defaultProps = {
   lineHeight: 1
 };
 
-Heading.propTypes = {
+Heading.propTypes = Object.assign({}, propTypesBase, {
   className: PropTypes.string,
   children: PropTypes.node,
   fit: PropTypes.bool,
   size: PropTypes.number,
   style: PropTypes.object,
   lineHeight: PropTypes.number
-};
+});
 
 Heading.contextTypes = {
   styles: PropTypes.object

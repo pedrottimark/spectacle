@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import Radium from "radium";
+import { styleBase, propTypesBase } from "../utils/base";
 
 @Radium
 export default class S extends Component {
@@ -19,14 +20,14 @@ export default class S extends Component {
       styles = Object.assign(styles, {fontStyle: "italic"});
     }
     return (
-      <span className={this.props.className} style={[styles, this.context.styles.components.s[type], style]}>
+      <span className={this.props.className} style={[this.context.styles.components.s[type], styleBase(this.props, this.context), styles, style]}>
         {children}
       </span>
     );
   }
 }
 
-S.propTypes = {
+S.propTypes = Object.assign({}, propTypesBase, {
   className: PropTypes.string,
   children: PropTypes.node,
   style: PropTypes.object,
@@ -34,7 +35,7 @@ S.propTypes = {
     PropTypes.string,
     PropTypes.array
   ])
-};
+});
 
 S.contextTypes = {
   styles: PropTypes.object

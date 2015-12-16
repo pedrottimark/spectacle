@@ -4,11 +4,11 @@ import Radium from "radium";
 @Radium
 export default class Layout extends Component {
   render() {
-    const styles = {
+    const styleLayout = {
       display: "flex"
     };
     return (
-      <div style={[styles, this.props.style]}>
+      <div style={[styleLayout, this.props.style]}>
         {this.props.children}
       </div>
     );

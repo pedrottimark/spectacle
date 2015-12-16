@@ -4,11 +4,11 @@ import Radium from "radium";
 @Radium
 export default class Fit extends Component {
   render() {
-    const styles = {
+    const styleFit = {
       flex: 0
     };
     return (
-      <div className={this.props.className} style={[styles, this.props.style]}>
+      <div className={this.props.className} style={[this.props.style, styleFit]}>
         {this.props.children}
       </div>
     );
