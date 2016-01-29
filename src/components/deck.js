@@ -52,6 +52,7 @@ export default class Deck extends Component {
 
   constructor() {
     super();
+    this._stepCountCallback = this._stepCountCallback.bind(this);
     this._handleKeyPress = this._handleKeyPress.bind(this);
     this._handleScreenChange = this._handleScreenChange.bind(this);
     this._handleClick = this._handleClick.bind(this);
@@ -179,6 +180,10 @@ export default class Deck extends Component {
     }
     return hash;
   }
+  _stepCountCallback(stepCount) {
+    // Current slide (only in Normal and Presenter view) calls back its number of steps.
+    this.stepCountSlide = stepCount;
+  }
   _checkFragments(slide, forward) {
     const state = this.context.store.getState();
     const fragments = state.fragment.fragments;
@@ -188,6 +193,7 @@ export default class Deck extends Component {
       if (main) {
         const frags = main.querySelectorAll(".fragment");
         if (!frags.length) {
+          console.log("Deck._checkFragments", frags.length, this.stepCountSlide);
           return true;
         }
       } else {
@@ -196,6 +202,7 @@ export default class Deck extends Component {
     }
     if (slide in fragments) {
       const count = _.size(fragments[slide]);
+      console.log("Deck._checkFragments", count, this.stepCountSlide);
       const visible = _.filter(fragments[slide], (s) => s.visible === true);
       const hidden = _.filter(fragments[slide], (s) => s.visible !== true);
       if (forward === true && visible.length !== count) {
@@ -319,6 +326,7 @@ export default class Deck extends Component {
     const child = Children.toArray(this.props.children)[slide];
     return cloneElement(child, {
       dispatch: this.props.dispatch,
+      stepCountCallback: this._stepCountCallback,
       fragments: this.props.fragment,
       key: slide,
       route: this.props.route,
@@ -373,6 +381,7 @@ export default class Deck extends Component {
       componentToRender = (
         <Presenter
           dispatch={this.props.dispatch}
+          stepCountCallback={this._stepCountCallback}
           slides={children}
           slide={this._getSlideIndex()}
           hash={this.props.route.slide}

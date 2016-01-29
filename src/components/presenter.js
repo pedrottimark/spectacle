@@ -30,6 +30,7 @@ export default class Presenter extends Component {
     };
     return cloneElement(child, {
       dispatch: this.props.dispatch,
+      stepCountCallback: this.props.stepCountCallback,
       key: slide,
       hash,
       route: this.props.route,
@@ -188,6 +189,7 @@ export default class Presenter extends Component {
 
 Presenter.propTypes = {
   dispatch: PropTypes.func,
+  stepCountCallback: PropTypes.func,
   route: PropTypes.object,
   lastSlide: PropTypes.number,
   hash: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

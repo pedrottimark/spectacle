@@ -8,10 +8,15 @@ const Appear = React.createClass({
   mixins: [tweenState.Mixin],
   propTypes: {
     children: PropTypes.node,
+    order: PropTypes.number,
     style: PropTypes.object,
     route: PropTypes.object
   },
   contextTypes: {
+    fromSlide: PropTypes.shape({
+      slideIndex: PropTypes.number,
+      visitSteps: PropTypes.func
+    }),
     export: PropTypes.bool,
     overview: PropTypes.bool,
     slide: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
@@ -21,6 +26,14 @@ const Appear = React.createClass({
       active: false,
       opacity: this.props.route.params.indexOf("export") !== -1 || this.props.route.params.indexOf("overview") !== -1 ? 1 : 0
     };
+  },
+  componentDidMount() {
+    // The componentDidMount method of child components is invoked before that of parent components.
+    // Slide calls back from its componentDidMount method to set the step index.
+    this.context.fromSlide.visitSteps(this.props.order, 1, (stepIndex) => {
+      console.log("Appear.componentDidMount", this.context.fromSlide.slideIndex, stepIndex);
+      this.stepIndex = stepIndex;
+    });
   },
   componentWillReceiveProps(nextProps) {
     const state = nextProps.fragment;

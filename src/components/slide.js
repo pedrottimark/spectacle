@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import tweenState from "react-tween-state";
 import { getStyles } from "../utils/base";
+import stepVisitor from "../utils/step-visitor";
 import Transitions from "./transitions";
 import radium from "radium";
 import { addFragment } from "../actions";
@@ -36,10 +37,25 @@ const Slide = React.createClass({
     overview: PropTypes.bool,
     store: PropTypes.object
   },
+  childContextTypes: {
+    fromSlide: PropTypes.shape({
+      slideIndex: PropTypes.number,
+      visitSteps: PropTypes.func
+    })
+  },
   getInitialState() {
+    this.stepVisitor = stepVisitor(); // TODO: move to constructor when Slide extends Component
     return {
       zoom: 1,
       contentScale: 1
+    };
+  },
+  getChildContext() {
+    return {
+      fromSlide: {
+        slideIndex: this.props.slideIndex,
+        visitSteps: this.stepVisitor.visitSteps
+      }
     };
   },
   setZoom() {
@@ -57,6 +73,13 @@ const Slide = React.createClass({
     }
   },
   componentDidMount() {
+    // The componentDidMount method of child components is invoked before that of parent components.
+    this.stepCount = this.stepVisitor.getCount(); // sets stepIndex of descendants as a side effect
+    console.log("Slide.componentDidMount", this.props.slideIndex, this.stepCount);
+    if (this.props.stepCountCallback) {
+      // Number of steps in current slide (only in Normal and Presenter view).
+      this.props.stepCountCallback(this.stepCount);
+    }
     this.setZoom();
     const slide = this.refs.slide;
     const frags = slide.querySelectorAll(".fragment");
